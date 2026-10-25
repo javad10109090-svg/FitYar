@@ -1,0 +1,142 @@
+<!doctype html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#11150f">
+<meta name="description" content="فیت‌یار، برنامه تمرینی شخصی و ثبت پیشرفت">
+<link rel="manifest" href="manifest.json">
+<link rel="icon" href="icon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="style.css">
+<title>فیت‌یار | مربی تمرینی شخصی</title>
+</head>
+<body>
+<div class="app">
+<header class="topbar">
+  <div class="brand"><div class="brand-mark">F</div><div><b>فیت‌یار</b><small>مربی تمرینی شخصی تو</small></div></div>
+  <button class="icon-btn" id="profileBtn" title="تنظیمات پروفایل" aria-label="تنظیمات">⚙</button>
+</header>
+
+<section class="hero">
+  <div class="hero-content"><span class="eyebrow">هر روز، یک قدم قوی‌تر</span><h1 id="welcome">برنامه‌ات آماده‌ست؟</h1><p id="goalLine">هدف خودت را مشخص کن و شروع کن.</p>
+  <button class="btn primary" id="todayBtn">شروع تمرین امروز <span>←</span></button></div>
+  <div class="hero-art" aria-hidden="true"><div class="ring r1"></div><div class="ring r2"></div><div class="hero-star">✦</div><div class="hero-tag">FIT<br><b>01</b></div></div>
+</section>
+
+<section class="stat-grid">
+  <article class="stat-card"><div class="stat-head"><span class="stat-icon">◷</span><small>جلسات این هفته</small></div><strong><span id="weekCount">۰</span><i> جلسه</i></strong><div class="progress-track"><span id="weekProgress"></span></div><small class="stat-foot" id="weekGoalText">هدف هفتگی</small></article>
+  <article class="stat-card"><div class="stat-head"><span class="stat-icon">↗</span><small>کل جلسات</small></div><strong><span id="totalCount">۰</span><i> جلسه</i></strong><small class="stat-foot">از شروع استفاده</small></article>
+  <article class="stat-card"><div class="stat-head"><span class="stat-icon">⚖</span><small>آخرین وزن</small></div><strong><span id="latestWeight">—</span><i> کیلو</i></strong><small class="stat-foot" id="weightDelta">هنوز ثبت نشده</small></article>
+</section>
+
+<section class="section">
+  <div class="section-title"><div><span class="eyebrow">برنامه شخصی تو</span><h2>برنامه هفتگی</h2></div><div class="plan-tools"><button class="link-btn" id="newPlanBtn">＋ برنامه جدید</button><button class="link-btn" id="editPlanBtn">ویرایش برنامه‌ها</button></div></div>
+  <div id="planList" class="plan-list"></div>
+</section>
+
+<section class="section">
+  <div class="section-title"><div><span class="eyebrow">شروع تمرین</span><h2>تمرین سریع</h2></div><span class="pill">بدون اینترنت هم قابل استفاده</span></div>
+  <div class="quick-grid">
+    <button class="quick-card" id="freeWorkout"><span>＋</span><b>تمرین آزاد</b><small>ثبت یک جلسه دلخواه</small></button>
+    <button class="quick-card" id="addWeightBtn"><span>⚖</span><b>ثبت وزن</b><small>پیگیری روند بدنت</small></button>
+  </div>
+</section>
+
+<section class="section">
+  <div class="section-title"><div><span class="eyebrow">پیشنهاد بر اساس عملکرد</span><h2>مربی فیت‌یار</h2></div><span class="spark">✦</span></div>
+  <div class="coach-card"><div class="coach-symbol">✦</div><div><b id="coachTitle">پیشنهاد تمرینی</b><p id="coachText">بعد از ثبت تمرین‌ها، پیشنهادهای ساده و قابل اجرا می‌گیری.</p></div></div>
+  <p class="disclaimer">پیشنهادها بر پایه قوانین ساده تمرینی هستند و جایگزین مربی یا مشاوره پزشکی نیستند.</p>
+</section>
+
+<section class="section">
+  <div class="section-title"><div><span class="eyebrow">تاریخچه</span><h2>آخرین تمرین‌ها</h2></div><button class="link-btn" id="allHistoryBtn">مشاهده همه</button></div>
+  <div id="recentList" class="history-list"></div>
+</section>
+
+<nav class="bottom-nav">
+ <button class="nav active" data-view="home"><span>⌂</span>خانه</button>
+ <button class="nav" data-view="plan"><span>▤</span>برنامه</button>
+ <button class="nav" data-view="progress"><span>↗</span>پیشرفت</button>
+ <button class="nav" data-view="data"><span>⇧</span>پشتیبان</button>
+</nav>
+</div>
+
+<dialog id="profileDialog" class="modal">
+<form id="profileForm" method="dialog">
+ <div class="modal-title"><div><span class="eyebrow">شخصی‌سازی</span><h2>تنظیمات برنامه</h2></div><button class="icon-btn" value="cancel" aria-label="بستن">×</button></div>
+ <div class="form-grid">
+  <label>نام یا لقب<input id="pName" maxlength="35" placeholder="مثلاً قهرمان"></label>
+  <label>هدف اصلی<select id="pGoal"><option value="muscle">عضله‌سازی</option><option value="fatloss">چربی‌سوزی</option><option value="strength">افزایش قدرت</option><option value="fitness">تناسب اندام و سلامتی</option></select></label>
+  <label>سطح تمرین<select id="pLevel"><option value="beginner">مبتدی</option><option value="intermediate">متوسط</option><option value="advanced">پیشرفته</option></select></label>
+  <label>روز تمرین در هفته<select id="pDays"><option value="2">۲ روز</option><option value="3">۳ روز</option><option value="4">۴ روز</option><option value="5">۵ روز</option></select></label>
+  <label>محل تمرین<select id="pPlace"><option value="gym">باشگاه</option><option value="home">خانه</option></select></label>
+  <label>واحد وزن<select id="pUnit"><option value="kg">کیلوگرم</option><option value="lb">پوند</option></select></label>
+  <label class="full">محدودیت یا نکته مهم (اختیاری)<textarea id="pNotes" rows="2" maxlength="300" placeholder="مثلاً تمرین بدون پرش را ترجیح می‌دهم"></textarea></label>
+ </div>
+ <div class="modal-actions"><button class="btn primary" type="submit">ذخیره تنظیمات</button><button class="btn secondary" id="resetProfile" type="button">بازنشانی پروفایل</button></div>
+ <p class="fine">اگر درد یا آسیب داری، حرکت نامناسب را حذف کن و برای برنامه تخصصی از مربی واجد صلاحیت یا متخصص سلامت کمک بگیر.</p>
+</form>
+</dialog>
+
+<dialog id="workoutDialog" class="modal workout-modal">
+<form id="workoutForm" method="dialog">
+ <div class="modal-title"><div><span class="eyebrow" id="workoutKicker">جلسه تمرینی</span><h2 id="workoutHeading">تمرین امروز</h2></div><button class="icon-btn" value="cancel" aria-label="بستن">×</button></div>
+ <p class="muted" id="workoutDescription">قبل از شروع ۵ تا ۱۰ دقیقه گرم کن.</p>
+ <div id="exerciseContainer" class="exercise-container"></div>
+ <label>یادداشت جلسه<textarea id="workoutNote" rows="2" maxlength="500" placeholder="انرژی، وزنه‌ها یا نکته‌های تمرین"></textarea></label>
+ <div class="modal-actions"><button class="btn primary" id="completeWorkout" type="button">ذخیره جلسه تمرین</button><button class="btn secondary" id="cancelWorkout" type="button">لغو</button></div>
+ <p class="fine">اگر درد تیز، سرگیجه، درد قفسه سینه یا تنگی نفس غیرعادی داشتی تمرین را متوقف کن.</p>
+</form>
+</dialog>
+
+<dialog id="weightDialog" class="modal">
+<form id="weightForm" method="dialog">
+ <div class="modal-title"><div><span class="eyebrow">ثبت اندازه‌گیری</span><h2>وزن بدن</h2></div><button class="icon-btn" value="cancel" aria-label="بستن">×</button></div>
+ <label>وزن (<span id="weightUnitLabel">کیلوگرم</span>)<input id="weightValue" type="number" min="1" max="700" step="0.1" required inputmode="decimal" placeholder="مثلاً ۷۵٫۵"></label>
+ <label>تاریخ<input id="weightDate" type="date" required></label>
+ <label>یادداشت (اختیاری)<input id="weightNote" maxlength="100" placeholder="مثلاً صبح قبل از صبحانه"></label>
+ <div class="modal-actions"><button class="btn primary" type="submit">ذخیره وزن</button><button class="btn secondary" value="cancel">انصراف</button></div>
+</form>
+</dialog>
+
+<dialog id="progressDialog" class="modal">
+<form method="dialog">
+ <div class="modal-title"><div><span class="eyebrow">گزارش تو</span><h2>پیشرفت و آمار</h2></div><button class="icon-btn" value="cancel" aria-label="بستن">×</button></div>
+ <div id="progressContent"></div>
+ <button class="btn secondary full" value="close">بستن</button>
+</form>
+</dialog>
+
+<dialog id="historyDialog" class="modal">
+<form method="dialog">
+ <div class="modal-title"><div><span class="eyebrow">سوابق ذخیره‌شده</span><h2>تاریخچه تمرین</h2></div><button class="icon-btn" value="cancel" aria-label="بستن">×</button></div>
+ <div id="historyContent" class="history-list"></div>
+ <button class="btn secondary full" value="close">بستن</button>
+</form>
+</dialog>
+
+<dialog id="dataDialog" class="modal">
+<form method="dialog" id="dataForm">
+ <div class="modal-title"><div><span class="eyebrow">امنیت اطلاعات</span><h2>پشتیبان‌گیری</h2></div><button class="icon-btn" value="cancel" aria-label="بستن">×</button></div>
+ <p class="muted">اطلاعات فعلاً روی همین مرورگر و همین دستگاه ذخیره می‌شود. هر چند وقت یک‌بار فایل پشتیبان بگیر.</p>
+ <div class="backup-card"><b>خروجی گرفتن</b><p>یک فایل JSON شامل تنظیمات، تمرین‌ها و وزن‌ها ذخیره می‌کند.</p><button class="btn primary full" id="exportBtn" type="button">دانلود نسخه پشتیبان</button></div>
+ <div class="backup-card"><b>بازیابی نسخه پشتیبان</b><p>فایل JSON قبلی را انتخاب کن. اطلاعات فعلی با نسخه پشتیبان جایگزین می‌شود.</p><input id="importFile" type="file" accept=".json,application/json"><button class="btn secondary full" id="importBtn" type="button">بازیابی اطلاعات</button></div>
+ <div class="backup-card danger"><b>حذف همه اطلاعات</b><p>این کار برگشت‌پذیر نیست؛ پیش از آن نسخه پشتیبان بگیر.</p><button class="btn danger-btn full" id="deleteAllBtn" type="button">حذف اطلاعات محلی</button></div>
+</form>
+</dialog>
+
+<dialog id="planEditorDialog" class="modal editor-modal">
+<form id="planEditorForm" method="dialog">
+ <div class="modal-title"><div><span class="eyebrow">برنامه‌ساز</span><h2 id="planEditorHeading">ساخت برنامه تمرینی</h2></div><button class="icon-btn" value="cancel" aria-label="بستن">×</button></div>
+ <input id="editingPlanIndex" type="hidden" value="">
+ <label>نام برنامه<input id="planTitleInput" maxlength="55" required placeholder="مثلاً سینه و پشت بازو"></label>
+ <label>روز تمرین<select id="planDayInput"><option value="0">شنبه</option><option value="1">یکشنبه</option><option value="2">دوشنبه</option><option value="3">سه‌شنبه</option><option value="4">چهارشنبه</option><option value="5">پنجشنبه</option><option value="6">جمعه</option></select></label>
+ <div class="picker-heading"><b>انتخاب حرکت</b><small>اسم حرکت را جست‌وجو کن یا از دسته‌ها استفاده کن.</small></div>
+ <input id="exerciseSearch" type="search" placeholder="جست‌وجوی حرکت؛ مثلاً پرس، قفسه، دمبل..." autocomplete="off">
+ <div id="exerciseChips" class="exercise-chips"></div><div id="exerciseResults" class="exercise-results"></div>
+ <div class="picker-heading"><b>حرکت‌های انتخاب‌شده</b><small id="selectedCount">۰ حرکت</small></div><div id="selectedExercises" class="selected-exercises"></div>
+ <div class="modal-actions"><button class="btn primary" type="submit">ذخیره برنامه</button><button class="btn secondary" id="deletePlanBtn" type="button">حذف برنامه</button></div>
+</form></dialog>
+<div id="toast" class="toast" role="status"></div>
+<script src="app.js"></script>
+</body></html>
